@@ -9,7 +9,7 @@ public class Kiosk {
 
     public void start(){
         Scanner scanner = new Scanner(System.in);
-        int selectMenu = 0;
+        int selectMenu ;
         int orderChecked = 3;
 
 
@@ -104,15 +104,9 @@ public class Kiosk {
 
     private void orderMode(int input){
         switch (input) {
-            case 1:
-                menu = new BurgersMenu();
-                break;
-            case 2:
-                menu = new DrinksMenu();
-                break;
-            case 3:
-                menu = new DessertsMenu();
-                break;
+            case 1 -> menu = new BurgersMenu();
+            case 2 -> menu = new DrinksMenu();
+            case 3 -> menu = new DessertsMenu();
         }
         menu.printCategoryMenu();
     }

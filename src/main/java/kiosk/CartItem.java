@@ -1,9 +1,9 @@
 package kiosk;
 
 public class CartItem {
-    private String name;
+    private final String name;
     private int quantity;
-    private double price;
+    private final double price;
 
     public CartItem(String name, int quantity, double price){
         this.name = name;

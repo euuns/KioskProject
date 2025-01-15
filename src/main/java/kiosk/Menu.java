@@ -6,8 +6,6 @@ import java.util.List;
 public abstract class Menu {
     List<MenuItem> category = new ArrayList<>();
 
-
-
     public void printCategoryMenu() {
         for (int i = 0; i < category.size(); i++) {
             MenuItem item = category.get(i);
