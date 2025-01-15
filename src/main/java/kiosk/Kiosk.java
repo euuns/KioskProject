@@ -1,23 +1,19 @@
 package kiosk;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class Kiosk {
 
-    Menu menu = new Menu();
+    Menu menu;
 
     public void start(){
         Scanner scanner = new Scanner(System.in);
         int selectMenu = 0;
 
         while(true){
-            List<MenuItem> category = new ArrayList<>();
-
             // 메뉴 출력
             try{
-                menu.printCategory();
+                printMenu();
                 selectMenu = scanner.nextInt();
 
                 if(selectMenu == 0){
@@ -38,29 +34,27 @@ public class Kiosk {
             try{
                 switch (selectMenu){
                     case 1:
-                        category = menu.getBurgers();
-                        menu.printBurgersMenu();
+                        menu = new BurgersMenu();
                         break;
                     case 2:
-                        category = menu.getDrinks();
-                        menu.printDrinksMenu();
+                        menu = new DrinksMenu();
                         break;
                     case 3:
-                        category = menu.getDesserts();
-                        menu.printDessertsMenu();
+                        menu = new DessertsMenu();
                         break;
                 }
-                int menuSize = menu.selectSize(category);
+
+                menu.printCategoryMenu();
 
                 // 입력 예외 설정
                 selectMenu = scanner.nextInt();
                 if(selectMenu == 0){
                     continue;
-                } else if (selectMenu > menuSize) {
+                } else if (selectMenu > menu.menuSize()) {
                     throw new BadInputException();
                 }else{
                     // 선택 결과 출력
-                    MenuItem select = menu.getSelectMenu(category, selectMenu-1);
+                    MenuItem select = menu.getChoice(selectMenu-1);
                     System.out.println(select.getName()+" | W "+select.getPrice()+" | "+select.getExplanation());
                 }
             } catch (BadInputException be){
@@ -70,5 +64,12 @@ public class Kiosk {
             }
 
         }
+    }
+
+
+    public void printMenu(){
+        System.out.println("[ MAIN MENU ]");
+        System.out.println("1. Burgers\n2. Drinks\n3. Desserts");
+        System.out.println("0. 종료");
     }
 }
