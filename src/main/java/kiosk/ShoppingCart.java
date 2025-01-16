@@ -38,7 +38,7 @@ public class ShoppingCart {
     // 제품명으로 해당 CartItem을 반환하기 위한 find 메서드
     // cart에 저장되는 제품은 오직 하나
     // 여러 개가 담길 경우, 그 CartItem을 찾아 수량을 증가 시켜줌 -> 수량만 증가
-    private CartItem find(String name){
+    private CartItem find(String name) {
         return cart.stream().filter(item -> item.getName().equals(name)).
                 toList().get(0);
 
@@ -60,11 +60,11 @@ public class ShoppingCart {
         CartItem delete = find(name);
 
         // 장바구니에 담긴 수량이 2개 이상일 경우, 수량 감소
-        if(delete.getQuantity() >= 2){
-            delete.setQuantity(delete.getQuantity()-1);
+        if (delete.getQuantity() >= 2) {
+            delete.setQuantity(delete.getQuantity() - 1);
         }
         // 1개만 담겨있으면 제품 삭제
-        else{
+        else {
             cart.remove(delete);
         }
     }
@@ -91,7 +91,7 @@ public class ShoppingCart {
 
 
     // 제품 이름: 담은 수량
-    public Map<String, Integer> nameToQuantity(){
+    public Map<String, Integer> nameToQuantity() {
         Map<String, Integer> productList = new HashMap<>();
         cart.forEach(item -> productList.put(item.getName(), item.getQuantity()));
         return productList;

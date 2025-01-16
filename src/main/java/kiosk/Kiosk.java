@@ -115,12 +115,17 @@ public class Kiosk {
         menu.printCategoryMenu();
     }
 
-    private int cartMode() {
+    private int cartMode() throws BadInputException {
         System.out.println("아래와 같이 주문 하시겠습니까?\n");
         cart.printCart();
         System.out.println("1. 주문\t\t2. 메뉴판");
 
-        return new Scanner(System.in).nextInt();
+        int input = new Scanner(System.in).nextInt();
+        if (input > 2 || input == 0) {
+            throw new BadInputException();
+        }
+
+        return input;
     }
 
 
@@ -161,10 +166,9 @@ public class Kiosk {
         }
 
         int input = new Scanner(System.in).nextInt();
-        if (input > product.size()) {
+        if (input > product.size() || input == 0) {
             throw new BadInputException();
-        }
-        else {
+        } else {
             // 선택한 번호에 맞는 제품 이름을 받아 deleteItem 호출 -> 삭제
             String item = delete.get(input);
             cart.deleteItem(item);
