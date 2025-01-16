@@ -54,7 +54,7 @@ public class ShoppingCart {
             CartItem item = getCart().get(i);
             total += priceCalculation(item);
         }
-        return total;
+        return Math.floor(total * 100) / 100.0;
     }
     // 수량 * 금액
     private double priceCalculation(CartItem item){

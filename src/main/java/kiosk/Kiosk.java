@@ -49,7 +49,11 @@ public class Kiosk {
 
                     // 1. 주문 -> 총 금액을 출력하고, 장바구니 초기화
                     if(selectMenu == 1){
-                        System.out.println("주문이 완료되었습니다. 금액은 W "+cart.totalPrice()+"입니다.");
+
+                        // 할인 정보
+                        Discount discount = applyDiscount();
+
+                        System.out.println("주문이 완료되었습니다. 금액은 W "+discount.calculateDiscount(cart.totalPrice())+"입니다.");
                         cart.clearAll();
                         break;
 
@@ -135,4 +139,35 @@ public class Kiosk {
         System.out.println("위 메뉴를 장바구니에 추가하시겠습니까?");
         System.out.println("1. 확인\t\t2. 취소");
     }
+
+    private int printDiscount() throws BadInputException {
+        System.out.println("할인 정보를 입력해주세요.");
+        Discount discount = Discount.COMMON;
+        discount.printDiscountInformation();
+
+        int input = new Scanner(System.in).nextInt();
+        if(input > Discount.values().length){
+            throw new BadInputException();
+        }
+
+        return input;
+    }
+
+    private Discount applyDiscount() throws BadInputException {
+        int input = printDiscount();
+        switch (input){
+            case 1:
+                return Discount.PATRIOTS;
+            case 2:
+                return Discount.SOLDIER;
+            case 3:
+                return Discount.STUDENT;
+            case 4:
+                return Discount.COMMON;
+        }
+        // 기본 반환은 할인 적용이 안 된 일반타입
+        return Discount.COMMON;
+    }
+
+
 }
