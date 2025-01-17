@@ -1,9 +1,7 @@
 package kiosk;
 
-public class CartItem {
-    private final String name;
+public class CartItem extends Product {
     private int quantity;
-    private final double price;
 
     public CartItem(String name, int quantity, double price) {
         this.name = name;
@@ -11,16 +9,8 @@ public class CartItem {
         this.price = price;
     }
 
-    public String getName() {
-        return name;
-    }
-
     public int getQuantity() {
         return quantity;
-    }
-
-    public double getPrice() {
-        return price;
     }
 
     public void setQuantity(int quantity) {

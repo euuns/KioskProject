@@ -199,11 +199,9 @@ public class Kiosk {
                 return Discount.SOLDIER;
             case 3:
                 return Discount.STUDENT;
-            case 4:
+            default:
                 return Discount.COMMON;
         }
-        // 기본 반환은 할인 적용이 안 된 일반타입
-        return Discount.COMMON;
     }
 
 
