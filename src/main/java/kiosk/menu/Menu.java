@@ -2,13 +2,13 @@ package kiosk.menu;
 
 import kiosk.product.MenuItem;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Menu implements Desserts, Burgers, Drinks {
 
     List<MenuItem> category;
     String categoryName;
+
 
 
     // 상속받은 Category 메서드 구현
@@ -24,6 +24,7 @@ public abstract class Menu implements Desserts, Burgers, Drinks {
         }
         System.out.println("0. 뒤로가기");
     }
+
 
     // 리스트 크기 반환
     @Override

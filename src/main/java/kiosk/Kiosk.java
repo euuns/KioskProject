@@ -8,57 +8,54 @@ import java.util.*;
 public class Kiosk {
 
     ShoppingCart cart = new ShoppingCart();
-//    Display display = new Display();
-    int menuIdx;
+    Display display = new Display();
+    int orderChecked = display.getSize();
+    Map<Integer, String> menuNumber = new HashMap<>();
 
-    private Display getDisplay(){
-        return new Display();
-    }
 
     public void start() {
         Scanner scanner = new Scanner(System.in);
         int selectMenu;
-        int orderChecked = 3;
 
 
         while (true) {
-            // 메뉴 출력
-            try {
-                printMenu();
+            try{
 
-                // 장바구니에 주문 내역이 있으면
-                if (cart.isOrder()) {
-                    printOrder();
-                    orderChecked = 5;
-                }
-                selectMenu = scanner.nextInt();
+                // 메뉴 출력
+                selectMenu = printMenu();
 
-                // 메뉴 입력
-                if (selectMenu == 0) {
+                if(selectMenu == 0){
                     System.out.println("프로그램을 종료합니다.");
                     break;
 
-                  // 선택한 메뉴가 조건보다 큰 경우 -> 범위를 벗어난 입력일 경우
-                } else if (selectMenu > orderChecked) {
-                    throw new BadInputException();
-                }
+                  // 입력한 번호가 지정한 카테고리 개수에 벗어나지 않는 지 확인
+                } else if (selectMenu <= display.getSize()){
+                    // 선택한 카테고리 세팅
+                    display.setMenu(selectMenu);
+                    // 해당 카테고리의 제품들 출력
+                    display.getMenu().printCategoryMenu();
 
-            } catch (BadInputException be) {
-                System.out.println(be.getMessage());
-                continue;
-            } finally {
-                System.out.println();
-            }
+                    selectMenu = scanner.nextInt();
 
+                    // 0. 뒤로가기
+                    if (selectMenu == 0) {
+                        continue;
 
-            // 소메뉴 출력
-            try {
-                // 입력한 정보가 3이하면, 일반 메뉴 출력
-                if (selectMenu <= 3) {
-                    orderMode(selectMenu);
+                      // 입력 값이 메뉴 크기를 초과하면 예외 처리
+                    } else if (selectMenu > display.getMenu().categorySize() ) {
+                        throw new BadInputException();
 
-                    // 입력이 4일 경우, 장바구니 내역 출력
-                } else if (selectMenu == 4) {
+                      // 제품을 선택했을 경우, 주문 모드로 진입
+                    } else {
+
+                        // 주문모드에서 '취소' 선택 시 false 반환
+                        if(!orderMode(selectMenu))
+                            continue;
+                    }
+
+                  // 카테고리 출력 바로 다음 번호가 장바구니 메뉴
+                  // 장바구니 내역을 출력하고, 그 안에서 소메뉴 입력값을 받아옴
+                } else if (selectMenu == display.getSize()+1) {
                     selectMenu = cartMode();
 
                     // 1. 주문 -> 총 금액을 출력하고, 장바구니 초기화
@@ -71,47 +68,23 @@ public class Kiosk {
                         cart.clearAll();
                         break;
 
+
                         // 2. 메뉴판
                     } else if (selectMenu == 2) {
                         System.out.println("메뉴판으로 돌아갑니다.");
                         continue;
                     }
 
-                    // 주문 취소 -> 입력이 5인 경우
-                } else {
+                  // 주문 취소
+                } else if (selectMenu == display.getSize()+2) {
                     deleteCart();
                     continue;
                 }
 
-                // 입력 예외 설정
-                selectMenu = scanner.nextInt();
 
-                // 0. 뒤로가기
-                if (selectMenu == 0) {
-                    continue;
-                } else if (selectMenu > getDisplay().menus.size() ) {
-                    throw new BadInputException();
-                } else {
-                    // 선택 결과 출력
-                    MenuItem select = getDisplay().getMenu(menuIdx).getChoice(selectMenu - 1);
-                    System.out.println(select.getName() + " | W " + select.getPrice() + " | " + select.getExplanation());
-                    checkCart();    // 추가하시겠습니까?
-
-
-                    selectMenu = scanner.nextInt();
-                    // 1. 확인 -> 장바구니에 추가
-                    if (selectMenu == 1) {
-                        cart.addItem(select.getName(), select.getPrice());
-                        System.out.println(select.getName() + "이 장바구니에 추가되었습니다.");
-                        // 2. 취소
-                    } else if (selectMenu == 2) {
-                        continue;
-                    } else {
-                        throw new BadInputException();
-                    }
-                }
-            } catch (BadInputException be) {
+            } catch (BadInputException be){
                 System.out.println(be.getMessage());
+                continue;
             } finally {
                 System.out.println();
             }
@@ -120,11 +93,58 @@ public class Kiosk {
     }
 
 
-    private void orderMode(int input) {
-        menuIdx = input - 1;
-        getDisplay().getMenu(menuIdx).printCategoryMenu();
+    // 전체 메뉴 출력 후 선택 정보 반환
+    private int printMenu() throws BadInputException {
+        menuNumber = display.printMainMenu();
+
+        // 장바구니에 주문 내역이 있으면
+        if (cart.isOrder()) {
+            System.out.println("[ ORDER MENU ]");
+            System.out.println((display.getSize()+1) + ". Orders\n" + (display.getSize()+2) + ". Cancel");
+
+            orderChecked = display.getSize()+2;
+        }
+
+        // 메뉴를 선택하고 잘못된 번호는 예외 처리
+        int input = new Scanner(System.in).nextInt();
+        if (input > orderChecked){
+            throw new BadInputException();
+        }
+
+        // 선택한 번호 반환
+        return input;
     }
 
+
+    // 제품 목록에서 메뉴 선택 시 진입하게 될 주문 모드
+    private boolean orderMode(int input) throws BadInputException {
+        // 선택 결과 출력
+        MenuItem select = display.getMenu().getChoice(input - 1);
+        System.out.println(select.getName() + " | W " + select.getPrice() + " | " + select.getExplanation());
+
+        System.out.println("위 메뉴를 장바구니에 추가하시겠습니까?");
+        System.out.println("1. 확인\t\t2. 취소");
+
+        input = new Scanner(System.in).nextInt();
+
+        // 1. 확인 -> 장바구니에 추가
+        if (input == 1) {
+            cart.addItem(select.getName(), select.getPrice());
+            System.out.println(select.getName() + "이 장바구니에 추가되었습니다.");
+
+            return true;
+
+          // 2. 취소
+        } else if (input == 2) {
+            return false;
+
+        } else {
+            throw new BadInputException();
+        }
+    }
+
+
+    // 장바구니를 선택했을 때 보이는 장바구니 모드
     private int cartMode() throws BadInputException {
         System.out.println("아래와 같이 주문 하시겠습니까?\n");
         cart.printCart();
@@ -136,23 +156,6 @@ public class Kiosk {
         }
 
         return input;
-    }
-
-
-    // 전체 메뉴 출력
-    private void printMenu() {
-        getDisplay().printMainMenu();
-        System.out.println("0. 종료");
-    }
-
-    private void printOrder() {
-        System.out.println("[ ORDER MENU ]");
-        System.out.println("4. Orders\n5. Cancel");
-    }
-
-    private void checkCart() {
-        System.out.println("위 메뉴를 장바구니에 추가하시겠습니까?");
-        System.out.println("1. 확인\t\t2. 취소");
     }
 
 
@@ -187,6 +190,8 @@ public class Kiosk {
         System.out.println("제품을 삭제하였습니다.");
     }
 
+
+    // 할인 정보 출력
     private int printDiscount() throws BadInputException {
         System.out.println("할인 정보를 입력해주세요.");
         Discount discount = Discount.COMMON;
@@ -200,6 +205,8 @@ public class Kiosk {
         return input;
     }
 
+
+    // 할인율 계산
     private Discount applyDiscount() throws BadInputException {
         int input = printDiscount();
         switch (input) {

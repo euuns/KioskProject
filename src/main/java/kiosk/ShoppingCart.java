@@ -14,6 +14,7 @@ public class ShoppingCart {
         return cart.size() != 0;
     }
 
+
     // 장바구니에 제품 추가
     public void addItem(String name, double price) {
         // 같은 제품이 없는 경우 새로 추가
@@ -51,7 +52,7 @@ public class ShoppingCart {
     // 장바구니 품목 조회 -> stream 사용
     public void printCart() {
         System.out.println("[ Orders ]");
-        cart.stream().forEach(item -> System.out.println(item.getName() + "\t| " + item.getQuantity() + " 개\t| W " + item.getPrice()));
+        cart.forEach(item -> System.out.println(item.getName() + "\t| " + item.getQuantity() + " 개\t| W " + item.getPrice()));
 
         System.out.println("\n[ Total ]\nW " + totalPrice());
     }
