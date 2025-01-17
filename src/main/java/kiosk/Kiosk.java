@@ -1,9 +1,6 @@
 package kiosk;
 
-import kiosk.menu.Burgers;
-import kiosk.menu.Desserts;
-import kiosk.menu.Drinks;
-import kiosk.menu.Menu;
+import kiosk.menu.*;
 import kiosk.product.MenuItem;
 
 import java.util.*;
@@ -11,14 +8,11 @@ import java.util.*;
 public class Kiosk {
 
     ShoppingCart cart = new ShoppingCart();
-    Menu menu = new Burgers();
+//    Display display = new Display();
+    int menuIdx;
 
-    List<Menu> category = new ArrayList<>();
-
-    public Kiosk(){
-        category.add(new Burgers());
-        category.add(new Drinks());
-        category.add(new Desserts());
+    private Display getDisplay(){
+        return new Display();
     }
 
     public void start() {
@@ -31,15 +25,20 @@ public class Kiosk {
             // 메뉴 출력
             try {
                 printMenu();
+
+                // 장바구니에 주문 내역이 있으면
                 if (cart.isOrder()) {
                     printOrder();
                     orderChecked = 5;
                 }
                 selectMenu = scanner.nextInt();
 
+                // 메뉴 입력
                 if (selectMenu == 0) {
                     System.out.println("프로그램을 종료합니다.");
                     break;
+
+                  // 선택한 메뉴가 조건보다 큰 경우 -> 범위를 벗어난 입력일 경우
                 } else if (selectMenu > orderChecked) {
                     throw new BadInputException();
                 }
@@ -50,6 +49,7 @@ public class Kiosk {
             } finally {
                 System.out.println();
             }
+
 
             // 소메뉴 출력
             try {
@@ -77,7 +77,7 @@ public class Kiosk {
                         continue;
                     }
 
-                    // 주문 취소
+                    // 주문 취소 -> 입력이 5인 경우
                 } else {
                     deleteCart();
                     continue;
@@ -89,11 +89,11 @@ public class Kiosk {
                 // 0. 뒤로가기
                 if (selectMenu == 0) {
                     continue;
-                } else if (selectMenu > menu.menuSize()) {
+                } else if (selectMenu > getDisplay().menus.size() ) {
                     throw new BadInputException();
                 } else {
                     // 선택 결과 출력
-                    MenuItem select = menu.getChoice(selectMenu - 1);
+                    MenuItem select = getDisplay().getMenu(menuIdx).getChoice(selectMenu - 1);
                     System.out.println(select.getName() + " | W " + select.getPrice() + " | " + select.getExplanation());
                     checkCart();    // 추가하시겠습니까?
 
@@ -121,12 +121,8 @@ public class Kiosk {
 
 
     private void orderMode(int input) {
-        switch (input) {
-            case 1 -> menu = new Burgers();
-            case 2 -> menu = new Drinks();
-            case 3 -> menu = new Desserts();
-        }
-        menu.printCategoryMenu();
+        menuIdx = input - 1;
+        getDisplay().getMenu(menuIdx).printCategoryMenu();
     }
 
     private int cartMode() throws BadInputException {
@@ -143,11 +139,9 @@ public class Kiosk {
     }
 
 
+    // 전체 메뉴 출력
     private void printMenu() {
-        System.out.println("[ MAIN MENU ]");
-        for (int i = 0; i < category.size(); i++) {
-            System.out.println((i + 1) + ". " + category.get(i).getCategoryName());
-        }
+        getDisplay().printMainMenu();
         System.out.println("0. 종료");
     }
 

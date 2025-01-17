@@ -7,7 +7,6 @@ import java.util.List;
 
 public abstract class Menu implements Desserts, Burgers, Drinks {
 
-
     List<MenuItem> category;
     String categoryName;
 
@@ -17,10 +16,7 @@ public abstract class Menu implements Desserts, Burgers, Drinks {
     // 제품 출력
     @Override
     public void printCategoryMenu() {
-        String temp = getCategoryName();
-        categoryName = temp.substring(0, temp.length() - 4);
-
-        System.out.println("[ " + categoryName + " ]");
+        System.out.println("[ " + getCategoryName() + " ]");
 
         for (int i = 0; i < category.size(); i++) {
             MenuItem item = category.get(i);
@@ -44,6 +40,12 @@ public abstract class Menu implements Desserts, Burgers, Drinks {
     // 카테고리 이름 반환
     @Override
     public String getCategoryName() {
-        return this.getClass().getSimpleName();
+        return categoryName;
+    }
+
+    @Override
+    public void setCategoryName() {
+        String temp = this.getClass().getSimpleName();
+        categoryName = temp.substring(0, temp.length() - 4);
     }
 }

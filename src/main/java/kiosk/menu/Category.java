@@ -7,4 +7,5 @@ public interface Category {
     int categorySize();
     MenuItem getChoice(int idx);
     String getCategoryName();
+    void setCategoryName();
 }
