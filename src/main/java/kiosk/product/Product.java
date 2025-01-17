@@ -1,4 +1,4 @@
-package kiosk;
+package kiosk.product;
 
 public abstract class Product implements Item {
     protected String name;

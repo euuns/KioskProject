@@ -1,6 +1,8 @@
 package kiosk;
 
 
+import kiosk.product.CartItem;
+
 import java.util.*;
 
 public class ShoppingCart {

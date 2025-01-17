@@ -1,11 +1,25 @@
 package kiosk;
 
+import kiosk.menu.Burgers;
+import kiosk.menu.Desserts;
+import kiosk.menu.Drinks;
+import kiosk.menu.Menu;
+import kiosk.product.MenuItem;
+
 import java.util.*;
 
 public class Kiosk {
 
     ShoppingCart cart = new ShoppingCart();
-    Menu menu = new BurgersMenu();
+    Menu menu = new Burgers();
+
+    List<Menu> category = new ArrayList<>();
+
+    public Kiosk(){
+        category.add(new Burgers());
+        category.add(new Drinks());
+        category.add(new Desserts());
+    }
 
     public void start() {
         Scanner scanner = new Scanner(System.in);
@@ -108,9 +122,9 @@ public class Kiosk {
 
     private void orderMode(int input) {
         switch (input) {
-            case 1 -> menu = new BurgersMenu();
-            case 2 -> menu = new DrinksMenu();
-            case 3 -> menu = new DessertsMenu();
+            case 1 -> menu = new Burgers();
+            case 2 -> menu = new Drinks();
+            case 3 -> menu = new Desserts();
         }
         menu.printCategoryMenu();
     }
@@ -131,7 +145,9 @@ public class Kiosk {
 
     private void printMenu() {
         System.out.println("[ MAIN MENU ]");
-        System.out.println("1. Burgers\n2. Drinks\n3. Desserts");
+        for (int i = 0; i < category.size(); i++) {
+            System.out.println((i + 1) + ". " + category.get(i).getCategoryName());
+        }
         System.out.println("0. 종료");
     }
 

@@ -1,4 +1,4 @@
-package kiosk;
+package kiosk.product;
 
 public class CartItem extends Product {
     private int quantity;

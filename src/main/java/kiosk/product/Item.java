@@ -1,4 +1,4 @@
-package kiosk;
+package kiosk.product;
 
 public interface Item {
     String getName();

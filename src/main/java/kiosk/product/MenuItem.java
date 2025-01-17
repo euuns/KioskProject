@@ -1,4 +1,4 @@
-package kiosk;
+package kiosk.product;
 
 public class MenuItem extends Product {
     private String explanation;
