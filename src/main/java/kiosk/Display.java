@@ -22,7 +22,7 @@ public class Display {
 
 
     // 화면에 출력될 메뉴 내용 저장
-    public Display() throws InstantiationException, IllegalAccessException {
+    public Display() {
         menus.add(burger);
         menus.add(drink);
         menus.add(dessert);
@@ -34,9 +34,9 @@ public class Display {
     // key로 가져온 value는 메뉴 이름(getCategoryName())
     // menus를 순회하여 안에 있는 Menu를 가져와 value와 비교하고, 이름이 서로 동일하면 해당 Menu 사용
     public void setMenu(int input) {
-        for (Menu m:menus) {
+        for (Menu m : menus) {
             String name = m.getCategoryName();
-            if (menuNumber.get(input).equals(name)){
+            if (menuNumber.get(input).equals(name)) {
                 menu = m;
             }
         }
@@ -51,14 +51,13 @@ public class Display {
     }
 
 
-
     // 입력 번호와 그 이름을 key, value로 사용하여 반환
     public Map<Integer, String> printMainMenu() {
 
         System.out.println("[ MAIN MENU ]");
         for (int i = 0; i < menus.size(); i++) {
             menuNumber.put(i + 1, menus.get(i).getCategoryName());
-            System.out.println((i + 1) + ". " + menuNumber.get(i+1));
+            System.out.println((i + 1) + ". " + menuNumber.get(i + 1));
         }
         System.out.println("0. 종료");
 

@@ -6,12 +6,10 @@ import kiosk.menu.DrinksMenu;
 import kiosk.menu.Menu;
 
 public class Main {
-    public static void main(String[] args) throws InstantiationException, IllegalAccessException {
+    public static void main(String[] args){
         Kiosk kiosk = new Kiosk();
 
         kiosk.start();
-
-//        Display display = new Display();
 
     }
 }
