@@ -36,4 +36,6 @@ public enum Discount {
             System.out.println((i + 1) + ". " + discount[i].getType() + " : " + discount[i].getRate() + "%");
         }
     }
+
+
 }

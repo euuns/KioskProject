@@ -12,6 +12,9 @@ public class Kiosk {
     int orderChecked = display.getSize();
     Map<Integer, String> menuNumber = new HashMap<>();
 
+    public Kiosk() throws InstantiationException, IllegalAccessException {
+    }
+
 
     public void start() {
         Scanner scanner = new Scanner(System.in);
