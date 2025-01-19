@@ -7,10 +7,10 @@ import java.util.*;
 
 public class Kiosk {
 
-    ShoppingCart cart = new ShoppingCart();
-    Display display = new Display();
-    int orderChecked = display.getSize();
-    Map<Integer, String> menuNumber = new HashMap<>();
+    private ShoppingCart cart = new ShoppingCart();
+    private Display display = new Display();
+    private int orderChecked = display.getSize();
+    private Map<Integer, String> menuNumber = new HashMap<>();
 
 
 
