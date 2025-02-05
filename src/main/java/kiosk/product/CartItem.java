@@ -1,6 +1,6 @@
 package kiosk.product;
 
-public class CartItem extends Product {
+public class CartItem extends Item {
     private int quantity;
 
     public CartItem(String name, int quantity, double price) {

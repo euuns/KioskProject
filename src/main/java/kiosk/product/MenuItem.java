@@ -1,6 +1,6 @@
 package kiosk.product;
 
-public class MenuItem extends Product {
+public class MenuItem extends Item {
     private String explanation;
 
     public MenuItem(String name, double price, String explanation) {

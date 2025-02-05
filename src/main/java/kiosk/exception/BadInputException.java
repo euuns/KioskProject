@@ -1,4 +1,4 @@
-package kiosk;
+package kiosk.exception;
 
 public class BadInputException extends Exception {
     public BadInputException() {

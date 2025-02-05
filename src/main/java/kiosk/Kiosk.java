@@ -1,6 +1,6 @@
 package kiosk;
 
-import kiosk.menu.*;
+import kiosk.exception.BadInputException;
 import kiosk.product.MenuItem;
 
 import java.util.*;

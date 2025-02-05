@@ -1,6 +1,15 @@
 package kiosk.product;
 
-public interface Item {
-    String getName();
-    double getPrice();
+public abstract class Item {
+    protected String name;
+    protected double price;
+
+    public String getName() {
+        return name;
+    }
+
+
+    public double getPrice() {
+        return price;
+    }
 }
